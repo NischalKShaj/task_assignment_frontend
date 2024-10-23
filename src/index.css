@@ -44,3 +44,91 @@
   color: #000000;
   transition: all 0.2s ease-in-out;
 }
+
+.modern-calendar {
+  width: 100%;
+  max-width: 100%;
+  background: white;
+  border: none;
+  font-family: "Inter", sans-serif;
+  line-height: 1.125em;
+}
+
+.modern-calendar .react-calendar__navigation {
+  display: flex;
+  height: 44px;
+  margin-bottom: 1em;
+}
+
+.modern-calendar .react-calendar__navigation button {
+  min-width: 44px;
+  background: none;
+  font-size: 16px;
+  color: #374151;
+}
+
+.modern-calendar .react-calendar__navigation button:enabled:hover,
+.modern-calendar .react-calendar__navigation button:enabled:focus {
+  background-color: #e5e7eb;
+  border-radius: 8px;
+}
+
+.modern-calendar .react-calendar__navigation__label {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.modern-calendar .react-calendar__month-view__weekdays {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.75em;
+  color: #6b7280;
+}
+
+.modern-calendar .react-calendar__month-view__days__day--weekend {
+  color: #ef4444;
+}
+
+.modern-calendar .react-calendar__tile {
+  max-width: 100%;
+  padding: 10px 6.6667px;
+  background: none;
+  text-align: center;
+  line-height: 16px;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+.modern-calendar .react-calendar__tile:enabled:hover,
+.modern-calendar .react-calendar__tile:enabled:focus {
+  background-color: #e5e7eb;
+}
+
+.modern-calendar .react-calendar__tile--now {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.modern-calendar .react-calendar__tile--now:enabled:hover,
+.modern-calendar .react-calendar__tile--now:enabled:focus {
+  background: #fde68a;
+}
+
+.modern-calendar .react-calendar__tile--active {
+  background: #3b82f6;
+  color: white;
+}
+
+.modern-calendar .react-calendar__tile--active:enabled:hover,
+.modern-calendar .react-calendar__tile--active:enabled:focus {
+  background: #2563eb;
+}
+
+.modern-calendar .sunday {
+  color: #ef4444;
+}
+
+.modern-calendar .react-calendar__month-view__days__day--neighboringMonth {
+  color: #9ca3af;
+}

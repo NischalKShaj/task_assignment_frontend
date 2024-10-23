@@ -59,3 +59,9 @@ export interface UserState {
   }) => void;
   isLoggedOut: () => void;
 }
+
+// interface setting the date for the task manager
+export interface SelectDate {
+  date: Date | null;
+  changeDate: (date: Date | null) => void;
+}
