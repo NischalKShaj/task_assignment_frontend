@@ -65,3 +65,27 @@ export interface SelectDate {
   date: Date | null;
   changeDate: (date: Date | null) => void;
 }
+
+export interface SelectedTask {
+  managerName: string;
+  employeeName: string;
+  _doc: {
+    _id: string;
+    title: string;
+    description: string;
+    createdAt: Date | string;
+    dueDate: Date | string;
+    createdBy: string;
+    assignedTo: string;
+    status: string;
+  };
+}
+
+export interface IndividualTask {
+  title: string;
+  description: string;
+  employee: string;
+  createdAt: string;
+  dueDate: string | undefined;
+  createdBy: string | undefined;
+}

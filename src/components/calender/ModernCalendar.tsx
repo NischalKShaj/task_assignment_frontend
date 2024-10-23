@@ -51,12 +51,12 @@ export default function ModernCalendar() {
   };
 
   return (
-    <div className="p-6 pb-[580px] bg-white shadow-xl max-w-md border-r border-gray-700/45">
+    <div className="p-6 pb-[550px] bg-white shadow-xl max-w-md border-r border-gray-700/45">
       <h2 className="text-3xl font-bold mb-6 text-gray-800">Calender</h2>
       <Calendar
         onChange={handleDateChange}
         value={date}
-        className="modern-calendar"
+        className="modern-calendar border-black"
         tileClassName={({ date, view }) => {
           if (view === "month" && date.getDay() === 0) {
             return "sunday";
@@ -70,7 +70,11 @@ export default function ModernCalendar() {
         formatShortWeekday={formatShortWeekday}
         formatMonthYear={formatMonthYear}
       />
-      {/* The formattedDate is updated in the state but not displayed */}
+      <div className="flex items-center justify-center ">
+        <button className="w-40 bg-red-500 rounded text-white p-2">
+          Logout
+        </button>
+      </div>
     </div>
   );
 }
