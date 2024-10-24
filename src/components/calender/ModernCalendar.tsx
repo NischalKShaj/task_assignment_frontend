@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { DateStore } from "../../store/dateStore";
+import { AppState } from "../../store/store";
+import useApi from "../../hooks/useApi";
+import { useNavigate } from "react-router-dom";
 
 type ValuePiece = Date | null;
 
@@ -12,8 +15,12 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 export default function ModernCalendar() {
   const currentDate = DateStore((state) => state.changeDate);
+  const isLoggedOut = AppState((state) => state.isLoggedOut);
+  const user = AppState((state) => state.user);
   const [date, setDate] = useState<Value>(new Date());
   const [formattedDate, setFormattedDate] = useState<string>("");
+  const { get } = useApi();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const today = new Date();
@@ -56,8 +63,31 @@ export default function ModernCalendar() {
     return date.toLocaleDateString("en-US", { year: "numeric", month: "long" });
   };
 
+  // for handling the logout
+  const handleLogout = async () => {
+    try {
+      const response = await get(`/logout`);
+      if (response.status === 200) {
+        console.log("user logged out");
+        localStorage.removeItem("access_token");
+        isLoggedOut();
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("error", error);
+    }
+  };
+
   return (
     <div className="p-6 pb-[550px] bg-white shadow-xl max-w-md border-r border-gray-700/45">
+      <div>
+        <div>
+          <img alt="profile-image" src={user?.profile} />
+          <li>{user?.username}</li>
+          <li>{user?.email}</li>
+          <li>{user?.role}</li>
+        </div>
+      </div>
       <h2 className="text-3xl font-bold mb-6 text-gray-800">Calender</h2>
       <Calendar
         onChange={handleDateChange}
@@ -77,7 +107,10 @@ export default function ModernCalendar() {
         formatMonthYear={formatMonthYear}
       />
       <div className="flex items-center justify-center ">
-        <button className="w-40 bg-red-500 rounded text-white p-2">
+        <button
+          onClick={handleLogout}
+          className="w-40 bg-red-500 rounded text-white p-2"
+        >
           Logout
         </button>
       </div>

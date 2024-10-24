@@ -39,6 +39,7 @@ export interface LoginResponse {
     username: string;
     email: string;
     role: string;
+    profile: string;
   };
 }
 
@@ -50,12 +51,14 @@ export interface UserState {
     email: string;
     role: string;
     _id: string;
+    profile: string;
   } | null;
   isLoggedIn: (user: {
     _id: string;
     username: string;
     email: string;
     role: string;
+    profile: string;
   }) => void;
   isLoggedOut: () => void;
 }
@@ -88,4 +91,15 @@ export interface IndividualTask {
   createdAt: string;
   dueDate: string | undefined;
   createdBy: string | undefined;
+}
+
+export interface TaskDoc {
+  _id: string;
+  title: string;
+  description: string;
+  createdAt: string | Date;
+  dueDate: string | Date;
+  createdBy: string;
+  assignedTo: string;
+  status: string;
 }

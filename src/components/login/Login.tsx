@@ -51,6 +51,7 @@ const Login: React.FC = () => {
           username: data.username,
           email: data.email,
           role: data.role,
+          profile: data.profile,
         });
         console.log("user", data);
         navigate("/home");
