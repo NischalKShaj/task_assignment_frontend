@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useApi from "../../hooks/useApi";
 import { LoginFormData, LoginResponse } from "../../types/types";
 import { AppState } from "../../store/store";
+import Swal from "sweetalert2";
 
 const Login: React.FC = () => {
   const { post } = useApi();
@@ -53,10 +54,22 @@ const Login: React.FC = () => {
           role: data.role,
           profile: data.profile,
         });
+        Swal.fire({
+          title: "Success!",
+          text: "User logged in successfully.",
+          icon: "success",
+          confirmButtonText: "Okay",
+        });
         console.log("user", data);
         navigate("/home");
       }
     } catch (error) {
+      Swal.fire({
+        title: "error!",
+        text: "Incorrect user details.",
+        icon: "error",
+        confirmButtonText: "Okay",
+      });
       setMessage("invalid user details");
       console.error("error", error);
     }

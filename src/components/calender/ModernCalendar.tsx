@@ -8,6 +8,7 @@ import { DateStore } from "../../store/dateStore";
 import { AppState } from "../../store/store";
 import useApi from "../../hooks/useApi";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 type ValuePiece = Date | null;
 
@@ -68,12 +69,24 @@ export default function ModernCalendar() {
     try {
       const response = await get(`/logout`);
       if (response.status === 200) {
+        Swal.fire({
+          title: "Success!",
+          text: "User logged out successfully.",
+          icon: "success",
+          confirmButtonText: "Okay",
+        });
         console.log("user logged out");
         localStorage.removeItem("access_token");
         isLoggedOut();
         navigate("/");
       }
     } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: "Status of the task updated successfully.",
+        icon: "error",
+        confirmButtonText: "Okay",
+      });
       console.error("error", error);
     }
   };

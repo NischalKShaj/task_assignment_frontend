@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { AppState } from "../../store/store";
 import useApi from "../../hooks/useApi";
 import { SelectedTask, IndividualTask, TaskDoc } from "../../types/types";
+import Swal from "sweetalert2";
 
 const Task = () => {
   const date = DateStore((state) => state.date);
@@ -168,6 +169,12 @@ const Task = () => {
         if (response.status === 200) {
           const updatedTask = response.data;
           console.log("updated task", updatedTask);
+          Swal.fire({
+            title: "Success!",
+            text: "Task updated successfully.",
+            icon: "success",
+            confirmButtonText: "Okay",
+          });
           setTasks((prevTasks) =>
             prevTasks.map((t) => {
               if (t._doc._id === editingTaskId) {
@@ -187,6 +194,12 @@ const Task = () => {
         );
         if (response.status === 201) {
           const { _doc, employeeName, managerName } = response.data;
+          Swal.fire({
+            title: "Success!",
+            text: "New task added successfully.",
+            icon: "success",
+            confirmButtonText: "Okay",
+          });
           const updatedTask: SelectedTask = {
             _doc,
             employeeName,
@@ -199,6 +212,12 @@ const Task = () => {
       setIsEditing(false);
       setEditingTaskId(null);
     } catch (error) {
+      Swal.fire({
+        title: "ERror!",
+        text: "Oops something bad happened.",
+        icon: "error",
+        confirmButtonText: "Okay",
+      });
       console.error("error", error);
     }
   };
@@ -211,9 +230,21 @@ const Task = () => {
       const response = await del(`/remove-task/${id}`);
       if (response.status === 200) {
         console.log("response", response.data);
+        Swal.fire({
+          title: "Success!",
+          text: "Task deleted successfully.",
+          icon: "success",
+          confirmButtonText: "Okay",
+        });
         setTasks((prevTasks) => prevTasks.filter((t) => t._doc._id !== id));
       }
     } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: "Oops something bad happened.",
+        icon: "error",
+        confirmButtonText: "Okay",
+      });
       console.error("error", error);
     }
   };
@@ -229,6 +260,12 @@ const Task = () => {
       });
 
       if (response.status === 200) {
+        Swal.fire({
+          title: "Success!",
+          text: "Status of the task updated successfully.",
+          icon: "success",
+          confirmButtonText: "Okay",
+        });
         setTasks((prevTasks) =>
           prevTasks.map((task) => {
             if (task._doc._id === id) {

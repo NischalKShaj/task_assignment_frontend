@@ -6,6 +6,7 @@ import { isStrongPassword, isValidUsername } from "../../utils/validate";
 import useApi from "../../hooks/useApi";
 import { Link, useNavigate } from "react-router-dom";
 import { FormData, SignupResponse } from "../../types/types";
+import Swal from "sweetalert2";
 
 const Signup = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -64,10 +65,22 @@ const Signup = () => {
       const response = await post<SignupResponse>("/signup", dataToSubmit);
 
       if (response.status === 201) {
+        Swal.fire({
+          title: "Success!",
+          text: "User created successfully.",
+          icon: "success",
+          confirmButtonText: "Okay",
+        });
         console.log(response.data);
         navigate("/");
       }
     } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: "Oops something bad happened.",
+        icon: "error",
+        confirmButtonText: "Okay",
+      });
       console.error(error);
     }
   };
