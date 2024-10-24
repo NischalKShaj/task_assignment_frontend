@@ -3,10 +3,7 @@
 // importing the required modules
 import axios from "axios";
 
-const baseUrl =
-  import.meta.env.VITE_ENV === "development"
-    ? import.meta.env.VITE_BASE_URL_DEVMODE
-    : import.meta.env.VITE_BASE_URL_PRODUCTION;
+const baseUrl = import.meta.env.VITE_BASE_URL_DEVMODE;
 
 const api = axios.create({
   baseURL: baseUrl,
