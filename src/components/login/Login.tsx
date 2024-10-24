@@ -63,10 +63,10 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="bg-custom w-full flex justify-center items-center min-h-screen">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-slate-950 via-purple-900 to-slate-900">
       <form
         onSubmit={handleSubmit}
-        className="relative w-[450px] bg-[rgba(0,0,0,0.2)] backdrop-blur-[25px] border-2 border-[#c6c3c3] rounded-[15px] p-[7.5em_2.5em_4em_2.5em] text-[#ffffff]"
+        className="relative w-[450px] bg-[rgba(0,0,0,0.2)] backdrop-blur-[25px] border-2 border-[#e4dfdf] rounded-[15px] p-[7.5em_2.5em_4em_2.5em] text-[#ffffff]"
       >
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex items-center justify-center bg-[#c6c3c3] w-[140px] h-[70px] rounded-b-[20px]">
           <span className="text-[30px] text-[#000000]">Login</span>

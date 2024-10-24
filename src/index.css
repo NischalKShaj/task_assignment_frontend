@@ -29,7 +29,7 @@
   top: -10px; /* Move label up when input is focused or has a value */
   left: 20px;
   font-size: 14px;
-  color: #000000; /* Text color for label */
+  color: #ffff; /* Text color for label */
   padding: 0 5px; /* Padding for label */
   border-radius: 5px; /* Rounded corners for label */
   transition: all 0.2s ease-in-out; /* Smooth transition */
@@ -48,8 +48,9 @@
 .modern-calendar {
   width: 100%;
   max-width: 100%;
-  background: white;
+  background: rgba(255, 255, 255, 0.1);
   border: none;
+  color: white;
   font-family: "Inter", sans-serif;
   line-height: 1.125em;
 }
@@ -64,12 +65,12 @@
   min-width: 44px;
   background: none;
   font-size: 16px;
-  color: #374151;
+  color: white;
 }
 
 .modern-calendar .react-calendar__navigation button:enabled:hover,
 .modern-calendar .react-calendar__navigation button:enabled:focus {
-  background-color: #e5e7eb;
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 8px;
 }
 
@@ -83,11 +84,11 @@
   text-transform: uppercase;
   font-weight: bold;
   font-size: 0.75em;
-  color: #6b7280;
+  color: #d1d5db;
 }
 
 .modern-calendar .react-calendar__month-view__days__day--weekend {
-  color: #ef4444;
+  color: #f87171;
 }
 
 .modern-calendar .react-calendar__tile {
@@ -98,11 +99,12 @@
   line-height: 16px;
   font-size: 14px;
   border-radius: 8px;
+  color: white;
 }
 
 .modern-calendar .react-calendar__tile:enabled:hover,
 .modern-calendar .react-calendar__tile:enabled:focus {
-  background-color: #e5e7eb;
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .modern-calendar .react-calendar__tile--now {

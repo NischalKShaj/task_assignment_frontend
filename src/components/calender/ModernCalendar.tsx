@@ -79,40 +79,51 @@ export default function ModernCalendar() {
   };
 
   return (
-    <div className="p-6 pb-[550px] bg-white shadow-xl max-w-md border-r border-gray-700/45">
-      <div>
-        <div>
-          <img alt="profile-image" src={user?.profile} />
-          <li>{user?.username}</li>
-          <li>{user?.email}</li>
-          <li>{user?.role}</li>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-slate-950 via-purple-900 to-slate-900">
+      <div className="p-6 pb-[300px] bg-white/10 shadow-xl max-w-md border-r border-gray-600/45  backdrop-blur-lg">
+        <div className="mb-6 text-center">
+          <img
+            alt="profile-image"
+            src={user?.profile}
+            className="w-24 h-24 rounded-full mx-auto mb-4"
+          />
+          <ul className="text-white text-lg">
+            <li className="mb-1">{user?.username}</li>
+            <li className="mb-1">{user?.email}</li>
+            <li className="text-purple-400">{user?.role}</li>
+          </ul>
         </div>
-      </div>
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">Calender</h2>
-      <Calendar
-        onChange={handleDateChange}
-        value={date}
-        className="modern-calendar border-black"
-        tileClassName={({ date, view }) => {
-          if (view === "month" && date.getDay() === 0) {
-            return "sunday";
-          }
-        }}
-        prevLabel={<span className="calendar-nav">&#8249;</span>}
-        nextLabel={<span className="calendar-nav">&#8250;</span>}
-        prev2Label={null}
-        next2Label={null}
-        minDetail="month"
-        formatShortWeekday={formatShortWeekday}
-        formatMonthYear={formatMonthYear}
-      />
-      <div className="flex items-center justify-center ">
-        <button
-          onClick={handleLogout}
-          className="w-40 bg-red-500 rounded text-white p-2"
-        >
-          Logout
-        </button>
+
+        <h2 className="text-3xl font-bold mb-6 text-white text-center">
+          Task Scheduler
+        </h2>
+
+        <Calendar
+          onChange={handleDateChange}
+          value={date}
+          className="modern-calendar border-black"
+          tileClassName={({ date, view }) => {
+            if (view === "month" && date.getDay() === 0) {
+              return "sunday";
+            }
+          }}
+          prevLabel={<span className="calendar-nav text-white">&#8249;</span>}
+          nextLabel={<span className="calendar-nav text-white">&#8250;</span>}
+          prev2Label={null}
+          next2Label={null}
+          minDetail="month"
+          formatShortWeekday={formatShortWeekday}
+          formatMonthYear={formatMonthYear}
+        />
+
+        <div className="flex items-center justify-center mt-6">
+          <button
+            onClick={handleLogout}
+            className="w-40 bg-red-500 hover:bg-red-600 rounded text-white p-2 shadow-lg transform transition-transform duration-200 hover:scale-105"
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </div>
   );

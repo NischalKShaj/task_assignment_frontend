@@ -16,7 +16,7 @@ const Home = () => {
     }
   }, []);
   return (
-    <div className="bg-custom w-full flex flex-row min-h-screen">
+    <div className="min-h-screen flex flex-row bg-gradient-to-r from-slate-950 via-purple-900 to-slate-900">
       <ModernCalendar />
       <Task />
     </div>

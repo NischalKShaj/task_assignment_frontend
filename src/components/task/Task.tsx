@@ -256,7 +256,7 @@ const Task = () => {
     if (user?.role !== "employee") return null;
 
     return (
-      <div className="flex flex-col space-y-5">
+      <div className="flex flex-col space-y-2">
         <label
           htmlFor={`taskStatus-${item._doc._id}`}
           className="block text-lg mb-2"
@@ -265,7 +265,7 @@ const Task = () => {
         </label>
         <select
           id={`taskStatus-${item._doc._id}`}
-          className="p-2 border rounded w-full"
+          className="p-2 border rounded w-full text-black"
           value={item._doc.status}
           onChange={(e) => handleStatus(item, e.target.value)}
           disabled={statusUpdating === item._doc._id}
@@ -283,153 +283,171 @@ const Task = () => {
   };
 
   return (
-    <div className="flex flex-col w-full bg-white rounded-lg p-4 m-10">
-      <h2 className="mb-4 text-xl font-bold">Task Manager</h2>
-      <p>Date:{parsedStartDate.toLocaleDateString()}</p>
+    <div className="min-h-screen flex w-full items-start justify-center bg-gradient-to-r from-slate-950 via-purple-900 to-slate-900">
+      <div className="flex flex-col w-full mt-16 max-w-4xl min-h-[80vh] bg-slate-800 rounded-lg p-8 shadow-lg overflow-y-auto">
+        <h2 className="mb-4 text-3xl font-bold text-white text-center">
+          Task Manager
+        </h2>
+        <p className="text-gray-300 mb-4 text-center">
+          Date: {parsedStartDate.toLocaleDateString()}
+        </p>
 
-      {/* Form fields */}
-      {user?.role === "manager" && (
-        <div>
-          {!show ? (
-            // Show "Create" button when form is not shown
-            <button
-              onClick={handleCreate}
-              className="bg-blue-500 text-white p-2 rounded mb-4 w-40"
-            >
-              Create Task
-            </button>
-          ) : (
-            <div className="flex flex-col">
-              <label htmlFor="title" className="mb-2">
-                Title
-              </label>
-              <input
-                type="text"
-                onChange={handleChange}
-                name="title"
-                id="title"
-                value={task.title}
-                className="p-2 border rounded mb-4"
-              />
+        {/* Form for Managers */}
+        {user?.role === "manager" && (
+          <div>
+            {!show ? (
+              <button
+                onClick={handleCreate}
+                className="bg-blue-600 items-center justify-center flex text-white p-2 rounded mb-4 w-full max-w-xs mx-auto hover:bg-blue-700"
+              >
+                Create Task
+              </button>
+            ) : (
+              <div className="flex flex-col">
+                <label htmlFor="title" className="mb-2 text-gray-300">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  onChange={handleChange}
+                  name="title"
+                  id="title"
+                  value={task.title}
+                  className="p-2 bg-slate-700 text-white border border-slate-500 rounded mb-4"
+                  placeholder="Enter task title"
+                />
 
-              <label htmlFor="description" className="mb-2">
-                Description
-              </label>
-              <textarea
-                name="description"
-                onChange={handleChange}
-                value={task.description}
-                id="description"
-                className="p-2 border rounded mb-4"
-              />
-              {!isEditing && (
-                <>
-                  <label htmlFor="employee" className="mb-2">
-                    Employee
-                  </label>
-                  <input
-                    type="email"
-                    onChange={handleChange}
-                    name="employee"
-                    id="employee"
-                    className="p-2 border rounded"
-                  />
+                <label htmlFor="description" className="mb-2 text-gray-300">
+                  Description
+                </label>
+                <textarea
+                  name="description"
+                  onChange={handleChange}
+                  value={task.description}
+                  id="description"
+                  className="p-2 bg-slate-700 text-white border border-slate-500 rounded mb-4"
+                  placeholder="Enter task description"
+                />
 
-                  <div className="flex flex-row space-x-7">
-                    <div className="mb-4">
-                      <label className="block text-lg mb-2">Start Date:</label>
-                      <DatePicker
-                        selected={parsedStartDate}
-                        dateFormat="MMMM d, yyyy"
-                        readOnly
-                        className="w-full p-2 border rounded"
-                      />
+                {!isEditing && (
+                  <>
+                    <label htmlFor="employee" className="mb-2 text-gray-300">
+                      Employee
+                    </label>
+                    <input
+                      type="email"
+                      onChange={handleChange}
+                      name="employee"
+                      id="employee"
+                      className="p-2 bg-slate-700 text-white border border-slate-500 rounded mb-4"
+                      placeholder="Enter employee email"
+                    />
+
+                    <div className="flex flex-row space-x-7 mb-4">
+                      <div className="flex flex-col w-full">
+                        <label className="block text-lg text-gray-300 mb-2">
+                          Start Date:
+                        </label>
+                        <DatePicker
+                          selected={parsedStartDate}
+                          dateFormat="MMMM d, yyyy"
+                          readOnly
+                          className="w-full p-2 bg-slate-700 text-white border border-slate-500 rounded"
+                        />
+                      </div>
+
+                      <div className="flex flex-col w-full">
+                        <label className="block text-lg text-gray-300 mb-2">
+                          End Date:
+                        </label>
+                        <DatePicker
+                          selected={endDate}
+                          onChange={(date: Date | null) => setEndDate(date)}
+                          dateFormat="MMMM d, yyyy"
+                          minDate={parsedStartDate}
+                          className="w-full p-2 bg-slate-700 text-white border border-slate-500 rounded"
+                        />
+                      </div>
                     </div>
+                  </>
+                )}
 
-                    <div className="mb-4">
-                      <label className="block text-lg mb-2">End Date:</label>
-                      <DatePicker
-                        selected={endDate}
-                        onChange={(date: Date | null) => setEndDate(date)}
-                        dateFormat="MMMM d, yyyy"
-                        minDate={parsedStartDate}
-                        className="w-full p-2 border rounded"
-                      />
-                    </div>
-                  </div>
-                </>
-              )}
-              <div className="flex flex-row space-x-4">
-                <button
-                  onClick={handleSubmit}
-                  className="bg-green-500 text-white p-2 rounded w-40"
-                >
-                  {isEditing ? "Update" : "Submit"}
-                </button>
-                <button
-                  onClick={handleCreate}
-                  className="bg-red-500 text-white p-2 rounded w-40"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {tasks.length > 0 ? (
-        <div>
-          {tasks.map((item, index) => (
-            <div key={index} className="border p-4 mb-2 rounded">
-              <h3 className="font-bold">{item._doc.title}</h3>
-              <p>{item._doc.description}</p>
-              <p>
-                Status:{" "}
-                <span
-                  className={`font-bold ${
-                    item._doc.status === "completed"
-                      ? "text-green-500"
-                      : item._doc.status === "pending"
-                      ? "text-red-500"
-                      : item._doc.status === "in-progress"
-                      ? "text-yellow-500"
-                      : ""
-                  }`}
-                >
-                  {item._doc.status}
-                </span>
-              </p>
-              <p>
-                Due Date: {new Date(item._doc.dueDate).toLocaleDateString()}
-              </p>
-              <p>Assigned To: {item.employeeName}</p>
-              <p>Created By: {item.managerName}</p>
-              {user?.role === "manager" && (
-                <div className="flex space-x-4 mt-4">
+                <div className="flex flex-row space-x-4">
                   <button
-                    onClick={() => handleEdit(item)}
-                    className="bg-yellow-500 text-white p-2 rounded"
+                    onClick={handleSubmit}
+                    className="bg-green-600 text-white p-2 rounded w-full max-w-xs hover:bg-green-700"
                   >
-                    edit
+                    {isEditing ? "Update" : "Submit"}
                   </button>
                   <button
-                    onClick={() => handleDelete(item)}
-                    className="bg-red-500 text-white p-2 rounded"
+                    onClick={handleCreate}
+                    className="bg-red-600 text-white p-2 rounded w-full max-w-xs hover:bg-red-700"
                   >
-                    delete
+                    Close
                   </button>
                 </div>
-              )}
-              {user?.role === "employee" && renderEmployeeStatusUpdate(item)}
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div>
-          <h2>No tasks</h2>
-        </div>
-      )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Task List */}
+        {tasks.length > 0 ? (
+          <div className="mt-6 max-h-[60vh] overflow-y-auto">
+            {tasks.map((item, index) => (
+              <div
+                key={index}
+                className="border border-slate-500 p-4 mb-2 rounded bg-slate-700 text-white"
+              >
+                <h3 className="font-bold text-lg">{item._doc.title}</h3>
+                <p>{item._doc.description}</p>
+                <p>
+                  Status:{" "}
+                  <span
+                    className={`font-bold ${
+                      item._doc.status === "completed"
+                        ? "text-green-400"
+                        : item._doc.status === "pending"
+                        ? "text-red-400"
+                        : item._doc.status === "in-progress"
+                        ? "text-yellow-400"
+                        : ""
+                    }`}
+                  >
+                    {item._doc.status}
+                  </span>
+                </p>
+                <p>
+                  Due Date: {new Date(item._doc.dueDate).toLocaleDateString()}
+                </p>
+                <p>Assigned To: {item.employeeName}</p>
+                <p>Created By: {item.managerName}</p>
+                {user?.role === "manager" && (
+                  <div className="flex space-x-4 mt-4">
+                    <button
+                      onClick={() => handleEdit(item)}
+                      className="bg-yellow-500 text-white p-2 rounded hover:bg-yellow-600"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item)}
+                      className="bg-red-600 text-white p-2 rounded hover:bg-red-700"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+                {user?.role === "employee" && renderEmployeeStatusUpdate(item)}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-6 text-center">
+            <h2 className="text-white">No tasks</h2>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

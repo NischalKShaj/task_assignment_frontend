@@ -4,7 +4,7 @@
 import React, { ChangeEventHandler, useState } from "react";
 import { isStrongPassword, isValidUsername } from "../../utils/validate";
 import useApi from "../../hooks/useApi";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FormData, SignupResponse } from "../../types/types";
 
 const Signup = () => {
@@ -81,7 +81,7 @@ const Signup = () => {
   }
 
   return (
-    <div className="bg-custom w-full flex justify-center items-center min-h-screen">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-slate-950 via-purple-900 to-slate-900">
       <form
         onSubmit={handleSubmit}
         className="relative w-[450px] bg-[rgba(0,0,0,0.2)] backdrop-blur-[25px] border-2 border-[#c6c3c3] rounded-[15px] p-[7.5em_2.5em_4em_2.5em] text-[#ffffff]"
@@ -199,6 +199,12 @@ const Signup = () => {
           >
             Signup
           </button>
+        </div>
+        <div className="flex text-center cursor-pointer pt-2">
+          <p>Already have an account? Continue to</p>
+          <Link to="/" className="ml-2 text-blue-500">
+            Login
+          </Link>
         </div>
       </form>
     </div>
