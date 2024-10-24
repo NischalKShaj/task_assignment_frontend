@@ -54,13 +54,13 @@ export default function ModernCalendar() {
   };
 
   const formatShortWeekday = (
-    locale: string | undefined,
+    _locale: string | undefined,
     date: Date
   ): string => {
     return date.toLocaleDateString("en-US", { weekday: "narrow" });
   };
 
-  const formatMonthYear = (locale: string | undefined, date: Date): string => {
+  const formatMonthYear = (_locale: string | undefined, date: Date): string => {
     return date.toLocaleDateString("en-US", { year: "numeric", month: "long" });
   };
 
