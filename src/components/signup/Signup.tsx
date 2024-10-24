@@ -81,7 +81,7 @@ const Signup = () => {
         icon: "error",
         confirmButtonText: "Okay",
       });
-      console.error(error);
+      console.error("error", error);
     }
   };
 
