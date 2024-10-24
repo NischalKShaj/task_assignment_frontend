@@ -27,14 +27,13 @@ const Task = () => {
 
   const { get, post } = useApi();
 
-  const parsedStartDate = date
-    ? date instanceof Date
-      ? date
-      : new Date(date)
-    : new Date();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const parsedStartDate =
+    date instanceof Date ? date : new Date(date || new Date());
   const [prevParsedStartDate, setPrevParsedStartDate] =
     useState(parsedStartDate);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const formatDateForAPI = (date: Date) => {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
@@ -42,7 +41,6 @@ const Task = () => {
     return `${year}-${month}-${day}`; // Format it as YYYY-MM-DD
   };
 
-  // for fetching all the tasks for that particular date and the employee
   useEffect(() => {
     if (
       user?.role === "manager" &&
@@ -71,8 +69,36 @@ const Task = () => {
       };
       fetch();
       setPrevParsedStartDate(parsedStartDate);
+    } else if (
+      user?.role === "employee" &&
+      prevParsedStartDate.getTime() !== parsedStartDate.getTime()
+    ) {
+      const fetch = async () => {
+        try {
+          const id = user._id;
+          const formattedDate = formatDateForAPI(parsedStartDate);
+          const response = await get<SelectedTask[]>(
+            `/tasks/${formattedDate}/${id}`
+          );
+          if (response.status === 202 && Array.isArray(response.data)) {
+            const formattedTasks: SelectedTask[] = response.data.map(
+              (task) => ({
+                ...task,
+              })
+            );
+            setTasks(formattedTasks);
+          } else {
+            setTasks([]);
+          }
+        } catch (error) {
+          setTasks([]);
+          console.error("error", error);
+        }
+      };
+      fetch();
+      setPrevParsedStartDate(parsedStartDate);
     }
-  }, [parsedStartDate, user]);
+  }, [parsedStartDate, user, get]);
 
   // for showing the form for adding new task
   const handleCreate = () => {
@@ -249,6 +275,31 @@ const Task = () => {
                   </button>
                   <button className="bg-red-500 text-white p-2 rounded">
                     delete
+                  </button>
+                </div>
+              )}
+              {user?.role === "employee" && (
+                <div className="flex flex-col space-y-5">
+                  <label htmlFor="taskStatus" className="block text-lg mb-2">
+                    Task Status:
+                  </label>
+                  <select
+                    id="taskStatus"
+                    className="p-2 border rounded w-full"
+                    onChange={(e) => {
+                      const selectedStatus = e.target.value;
+                      console.log("Selected Status:", selectedStatus);
+                    }}
+                  >
+                    <option value="" disabled selected>
+                      Select Status
+                    </option>
+                    <option value="pending">Pending</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                  </select>
+                  <button className="bg-green-500 text-white p-2 rounded">
+                    update
                   </button>
                 </div>
               )}

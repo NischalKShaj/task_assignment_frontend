@@ -1,7 +1,7 @@
 // <=========================== file for showing the calender ====================>
 
 // importing the required modules
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { DateStore } from "../../store/dateStore";
@@ -14,6 +14,12 @@ export default function ModernCalendar() {
   const currentDate = DateStore((state) => state.changeDate);
   const [date, setDate] = useState<Value>(new Date());
   const [formattedDate, setFormattedDate] = useState<string>("");
+
+  useEffect(() => {
+    const today = new Date();
+    setDate(today);
+    currentDate(today);
+  }, [currentDate]);
 
   const handleDateChange = (value: Value) => {
     setDate(value);
