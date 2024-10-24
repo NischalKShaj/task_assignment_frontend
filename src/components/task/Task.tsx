@@ -31,13 +31,11 @@ const Task = () => {
 
   const { get, post, put, del } = useApi();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const parsedStartDate =
     date instanceof Date ? date : new Date(date || new Date());
   const [prevParsedStartDate, setPrevParsedStartDate] =
     useState(parsedStartDate);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const formatDateForAPI = (date: Date) => {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
