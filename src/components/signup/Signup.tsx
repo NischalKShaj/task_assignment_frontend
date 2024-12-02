@@ -94,61 +94,67 @@ const Signup = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-slate-950 via-purple-900 to-slate-900">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-800 via-gray-900 to-black">
       <form
         onSubmit={handleSubmit}
-        className="relative w-[450px] bg-[rgba(0,0,0,0.2)] backdrop-blur-[25px] border-2 border-[#c6c3c3] rounded-[15px] p-[7.5em_2.5em_4em_2.5em] text-[#ffffff]"
+        className="relative w-full max-w-md bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 shadow-lg rounded-lg p-8 space-y-6 text-white"
       >
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex items-center justify-center bg-[#c6c3c3] w-[140px] h-[70px] rounded-b-[20px]">
-          <span className="text-[30px] text-[#000000]">Signup</span>
+        <div className="text-center">
+          <h2 className="text-3xl font-bold mb-2">Signup</h2>
+          <p className="text-gray-400 text-sm">
+            Create your account. Join us now!
+          </p>
         </div>
-        {message && <p className="text-red-500 mt-4">{message}</p>}
-        <div className="relative flex flex-col items-center my-5">
+
+        {message && <p className="text-red-500 text-center">{message}</p>}
+
+        <div className="flex flex-col">
+          <label htmlFor="username" className="text-sm text-gray-400 mb-1">
+            Username
+          </label>
           <input
             type="text"
             id="username"
             onChange={changeEvent}
-            className="input_field peer"
-            placeholder=" "
+            className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+            placeholder="Enter your username"
             required
           />
-          <label htmlFor="email" className="label">
-            username
-          </label>
           {errors.username && (
             <p className="text-red-500 mt-1">{errors.username}</p>
           )}
         </div>
 
-        <div className="relative flex flex-col items-center my-5">
+        <div className="flex flex-col">
+          <label htmlFor="email" className="text-sm text-gray-400 mb-1">
+            Email
+          </label>
           <input
             type="email"
             id="email"
             onChange={changeEvent}
-            className="input_field peer"
-            placeholder=" "
+            className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+            placeholder="Enter your email"
             required
           />
-          <label htmlFor="email" className="label">
-            email
-          </label>
         </div>
 
-        <div className="relative flex flex-col items-center my-5">
+        <div className="flex flex-col">
+          <label htmlFor="phone" className="text-sm text-gray-400 mb-1">
+            Phone
+          </label>
           <input
             type="tel"
             id="phone"
             onChange={changeEvent}
-            className="input_field peer"
-            placeholder=" "
+            className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+            placeholder="Enter your phone number"
             required
           />
-          <label htmlFor="phone" className="label">
-            phone
-          </label>
         </div>
 
-        <div className="relative flex flex-col items-center my-5">
+        <div className="flex flex-col">
+          <label className="text-sm text-gray-400 mb-1">Role</label>
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
               <input
@@ -160,14 +166,10 @@ const Signup = () => {
                 required
                 onChange={changeEvent}
               />
-              <label
-                htmlFor="manager"
-                className="flex items-center cursor-pointer text-sm"
-              >
+              <label htmlFor="manager" className="text-sm cursor-pointer">
                 Manager
               </label>
             </div>
-
             <div className="flex items-center">
               <input
                 type="radio"
@@ -178,44 +180,40 @@ const Signup = () => {
                 required
                 onChange={changeEvent}
               />
-              <label
-                htmlFor="employee"
-                className="flex items-center cursor-pointer text-sm"
-              >
+              <label htmlFor="employee" className="text-sm cursor-pointer">
                 Employee
               </label>
             </div>
           </div>
         </div>
 
-        <div className="relative flex flex-col items-center my-5">
+        <div className="flex flex-col">
+          <label htmlFor="password" className="text-sm text-gray-400 mb-1">
+            Password
+          </label>
           <input
             type="password"
             id="password"
             onChange={changeEvent}
-            className="input_field peer"
-            placeholder=" "
+            className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+            placeholder="Enter your password"
             required
           />
-          <label htmlFor="password" className="label">
-            password
-          </label>
           {errors.password && (
             <p className="text-red-500 mt-1">{errors.password}</p>
           )}
         </div>
 
-        <div className="relative flex flex-col items-center my-5">
-          <button
-            type="submit"
-            className="w-full h-[45px] bg-[#f71616] text-[16px] font-medium border-none rounded-full cursor-pointer transition-colors duration-300 uppercase hover:bg-[#f53c3c]"
-          >
-            Signup
-          </button>
-        </div>
-        <div className="flex text-center cursor-pointer pt-2">
-          <p>Already have an account? Continue to</p>
-          <Link to="/" className="ml-2 text-blue-500">
+        <button
+          type="submit"
+          className="w-full py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold tracking-wide text-sm transition"
+        >
+          Signup
+        </button>
+
+        <div className="text-center text-sm text-gray-400">
+          Already have an account?{" "}
+          <Link to="/" className="text-blue-500 hover:underline">
             Login
           </Link>
         </div>

@@ -28,6 +28,8 @@ const Task = () => {
     createdBy: "",
   });
   const [statusUpdating, setStatusUpdating] = useState<string | null>(null);
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [dueDateFilter, setDueDateFilter] = useState<Date | null>(null);
 
   const { get, post, put, del } = useApi();
 
@@ -317,9 +319,20 @@ const Task = () => {
     );
   };
 
+  // for filtering the task
+  const filteredTasks = tasks.filter((task) => {
+    const matchesStatus =
+      statusFilter === "all" || task._doc.status === statusFilter;
+    const matchesDueDate =
+      !dueDateFilter ||
+      new Date(task._doc.dueDate).toDateString() ===
+        dueDateFilter.toDateString();
+    return matchesStatus && matchesDueDate;
+  });
+
   return (
-    <div className="min-h-screen flex w-full items-start justify-center bg-gradient-to-r from-slate-950 via-purple-900 to-slate-900">
-      <div className="flex flex-col w-full mt-16 max-w-4xl min-h-[80vh] bg-slate-800 rounded-lg p-8 shadow-lg overflow-y-auto">
+    <div className="min-h-screen flex w-full items-start justify-center bg-gradient-to-br from-gray-800 via-gray-900 to-black">
+      <div className="flex flex-col w-full mt-16 max-w-4xl min-h-[80vh] bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 rounded-lg p-8 shadow-lg overflow-y-auto">
         <h2 className="mb-4 text-3xl font-bold text-white text-center">
           Task Manager
         </h2>
@@ -327,13 +340,12 @@ const Task = () => {
           Date: {parsedStartDate.toLocaleDateString()}
         </p>
 
-        {/* Form for Managers */}
         {user?.role === "manager" && (
           <div>
             {!show ? (
               <button
                 onClick={handleCreate}
-                className="bg-blue-600 items-center justify-center flex text-white p-2 rounded mb-4 w-full max-w-xs mx-auto hover:bg-blue-700"
+                className="bg-blue-600 text-white p-2 rounded mb-4 w-full max-w-xs mx-auto hover:bg-blue-700 transition-all"
               >
                 Create Task
               </button>
@@ -348,7 +360,7 @@ const Task = () => {
                   name="title"
                   id="title"
                   value={task.title}
-                  className="p-2 bg-slate-700 text-white border border-slate-500 rounded mb-4"
+                  className="p-2 bg-slate-700 text-white border border-slate-500 rounded mb-4 focus:ring-2 focus:ring-blue-600"
                   placeholder="Enter task title"
                 />
 
@@ -360,7 +372,7 @@ const Task = () => {
                   onChange={handleChange}
                   value={task.description}
                   id="description"
-                  className="p-2 bg-slate-700 text-white border border-slate-500 rounded mb-4"
+                  className="p-2 bg-slate-700 text-white border border-slate-500 rounded mb-4 focus:ring-2 focus:ring-blue-600"
                   placeholder="Enter task description"
                 />
 
@@ -374,7 +386,7 @@ const Task = () => {
                       onChange={handleChange}
                       name="employee"
                       id="employee"
-                      className="p-2 bg-slate-700 text-white border border-slate-500 rounded mb-4"
+                      className="p-2 bg-slate-700 text-white border border-slate-500 rounded mb-4 focus:ring-2 focus:ring-blue-600"
                       placeholder="Enter employee email"
                     />
 
@@ -410,13 +422,13 @@ const Task = () => {
                 <div className="flex flex-row space-x-4">
                   <button
                     onClick={handleSubmit}
-                    className="bg-green-600 text-white p-2 rounded w-full max-w-xs hover:bg-green-700"
+                    className="bg-green-600 text-white p-2 rounded w-full max-w-xs hover:bg-green-700 transition-all"
                   >
                     {isEditing ? "Update" : "Submit"}
                   </button>
                   <button
                     onClick={handleCreate}
-                    className="bg-red-600 text-white p-2 rounded w-full max-w-xs hover:bg-red-700"
+                    className="bg-red-600 text-white p-2 rounded w-full max-w-xs hover:bg-red-700 transition-all"
                   >
                     Close
                   </button>
@@ -426,10 +438,50 @@ const Task = () => {
           </div>
         )}
 
+        {/* Add filter controls */}
+        <div className="mb-4 flex flex-wrap gap-4">
+          <div className="flex-1">
+            <label
+              htmlFor="statusFilter"
+              className="block text-sm font-medium text-gray-300 mb-1"
+            >
+              Filter by Status
+            </label>
+            <select
+              id="statusFilter"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="w-full p-2 bg-slate-700 text-white border border-slate-500 rounded focus:ring-2 focus:ring-blue-600"
+            >
+              <option value="all">All</option>
+              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+          <div className="flex-1">
+            <label
+              htmlFor="dueDateFilter"
+              className="block text-sm font-medium text-gray-300 mb-1"
+            >
+              Filter by Due Date
+            </label>
+            <DatePicker
+              id="dueDateFilter"
+              selected={dueDateFilter}
+              onChange={(date: Date | null) => setDueDateFilter(date)}
+              dateFormat="MMMM d, yyyy"
+              isClearable
+              placeholderText="Select due date"
+              className="w-full p-2 bg-slate-700 text-white border border-slate-500 rounded focus:ring-2 focus:ring-blue-600"
+            />
+          </div>
+        </div>
+
         {/* Task List */}
-        {tasks.length > 0 ? (
+        {filteredTasks.length > 0 ? (
           <div className="mt-6 max-h-[60vh] overflow-y-auto">
-            {tasks.map((item, index) => (
+            {filteredTasks.map((item, index) => (
               <div
                 key={index}
                 className="border border-slate-500 p-4 mb-2 rounded bg-slate-700 text-white"
@@ -461,13 +513,13 @@ const Task = () => {
                   <div className="flex space-x-4 mt-4">
                     <button
                       onClick={() => handleEdit(item)}
-                      className="bg-yellow-500 text-white p-2 rounded hover:bg-yellow-600"
+                      className="bg-yellow-500 text-white p-2 rounded hover:bg-yellow-600 transition-all"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => handleDelete(item)}
-                      className="bg-red-600 text-white p-2 rounded hover:bg-red-700"
+                      className="bg-red-600 text-white p-2 rounded hover:bg-red-700 transition-all"
                     >
                       Delete
                     </button>
@@ -479,7 +531,7 @@ const Task = () => {
           </div>
         ) : (
           <div className="mt-6 text-center">
-            <h2 className="text-white">No tasks</h2>
+            <h2 className="text-white">No tasks match the current filters</h2>
           </div>
         )}
       </div>

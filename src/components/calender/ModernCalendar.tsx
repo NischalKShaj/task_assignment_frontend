@@ -92,8 +92,9 @@ export default function ModernCalendar() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-slate-950 via-purple-900 to-slate-900">
-      <div className="p-6 pb-[300px] bg-white/10 shadow-xl max-w-md border-r border-gray-600/45  backdrop-blur-lg">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-800 via-gray-900 to-black">
+      <div className="p-8 bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 shadow-lg rounded-lg w-full max-w-md mr-9">
+        {/* Profile Section */}
         <div className="mb-6 text-center">
           <img
             alt="profile-image"
@@ -107,6 +108,7 @@ export default function ModernCalendar() {
           </ul>
         </div>
 
+        {/* Task Scheduler Section */}
         <h2 className="text-3xl font-bold mb-6 text-white text-center">
           Task Scheduler
         </h2>
@@ -114,7 +116,7 @@ export default function ModernCalendar() {
         <Calendar
           onChange={handleDateChange}
           value={date}
-          className="modern-calendar border-black"
+          className="modern-calendar border-black mb-6"
           tileClassName={({ date, view }) => {
             if (view === "month" && date.getDay() === 0) {
               return "sunday";
@@ -129,10 +131,11 @@ export default function ModernCalendar() {
           formatMonthYear={formatMonthYear}
         />
 
+        {/* Logout Button */}
         <div className="flex items-center justify-center mt-6">
           <button
             onClick={handleLogout}
-            className="w-40 bg-red-500 hover:bg-red-600 rounded text-white p-2 shadow-lg transform transition-transform duration-200 hover:scale-105"
+            className="w-full py-2 bg-red-600 hover:bg-red-700 rounded-lg text-white font-semibold tracking-wide text-sm transition-all transform hover:scale-105"
           >
             Logout
           </button>
