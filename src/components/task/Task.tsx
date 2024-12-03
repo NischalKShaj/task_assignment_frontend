@@ -29,7 +29,9 @@ const Task = () => {
   });
   const [statusUpdating, setStatusUpdating] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState("all");
-  const [dueDateFilter, setDueDateFilter] = useState<Date | null>(null);
+  const [searchFilter, setSearchFilter] = useState("");
+  const [debouncedSearchFilter, setDebouncedSearchFilter] =
+    useState(searchFilter);
 
   const { get, post, put, del } = useApi();
 
@@ -319,16 +321,43 @@ const Task = () => {
     );
   };
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchFilter(searchFilter);
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchFilter]);
+
   // for filtering the task
-  const filteredTasks = tasks.filter((task) => {
-    const matchesStatus =
-      statusFilter === "all" || task._doc.status === statusFilter;
-    const matchesDueDate =
-      !dueDateFilter ||
-      new Date(task._doc.dueDate).toDateString() ===
-        dueDateFilter.toDateString();
-    return matchesStatus && matchesDueDate;
-  });
+  const filteredTasks = async () => {
+    try {
+      const id = user?._id;
+      const searchParams = debouncedSearchFilter.trim() || "default";
+      const statusParams = statusFilter === "all" ? "all" : statusFilter;
+
+      const response = await get(
+        `/filterData/${id}/${statusParams}/${searchParams}`
+      );
+      console.log("response", response);
+      if (response.status === 200 && Array.isArray(response.data)) {
+        const formattedTasks: SelectedTask[] = response.data.map((task) => ({
+          ...task,
+        }));
+        setTasks(formattedTasks);
+      } else {
+        setTasks([]);
+      }
+    } catch (error) {
+      console.error("error", error);
+    }
+  };
+
+  useEffect(() => {
+    filteredTasks();
+  }, [debouncedSearchFilter, statusFilter]);
 
   return (
     <div className="min-h-screen flex w-full items-start justify-center bg-gradient-to-br from-gray-800 via-gray-900 to-black">
@@ -461,27 +490,25 @@ const Task = () => {
           </div>
           <div className="flex-1">
             <label
-              htmlFor="dueDateFilter"
+              htmlFor="search"
               className="block text-sm font-medium text-gray-300 mb-1"
             >
-              Filter by Due Date
+              Search
             </label>
-            <DatePicker
-              id="dueDateFilter"
-              selected={dueDateFilter}
-              onChange={(date: Date | null) => setDueDateFilter(date)}
-              dateFormat="MMMM d, yyyy"
-              isClearable
-              placeholderText="Select due date"
+            <input
+              id="search"
+              placeholder="Enter the manager name"
+              value={searchFilter}
+              onChange={(e) => setSearchFilter(e.target.value)}
               className="w-full p-2 bg-slate-700 text-white border border-slate-500 rounded focus:ring-2 focus:ring-blue-600"
             />
           </div>
         </div>
 
         {/* Task List */}
-        {filteredTasks.length > 0 ? (
+        {tasks.length > 0 ? (
           <div className="mt-6 max-h-[60vh] overflow-y-auto">
-            {filteredTasks.map((item, index) => (
+            {tasks.map((item, index) => (
               <div
                 key={index}
                 className="border border-slate-500 p-4 mb-2 rounded bg-slate-700 text-white"
